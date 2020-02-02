@@ -1,19 +1,20 @@
 'use strict';
 
-var tesseract = require('../lib/tesseract');
-var should = require('should');
+const {join} = require('path');
+const {expect} = require('chai');
+const tesseract = require('../lib/tesseract');
 
+describe('process', function () {
+  it('should return the string "node-tesseract"', async function () {
+    const testImage = join(__dirname, '/test.png');
 
-describe('process', function(){
-  it('should return the string "node-tesseract"', function(done){
-
-    var testImage = __dirname + '/test.png';
-
-    tesseract.process(testImage, function(err, text) {
-      text.trim().should.equal('node-tesseract');
-      done();
-    });
-
-  })
-})
-
+    let text = '';
+    try {
+      text = await tesseract.process(testImage);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err);
+    }
+    expect(text.trim()).to.equal('node-tesseract');
+  });
+});
